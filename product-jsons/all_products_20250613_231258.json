@@ -1,0 +1,141 @@
+[
+    {
+        "video_url": "https://www.tiktok.com/@polished.meg/video/7512967395364064558",
+        "products": [
+            {
+                "product_id": "1729463995211289384",
+                "title": "Big Brush with Replaceable Head",
+                "elastic_title": "Wide handle toothbrush ",
+                "price": 0,
+                "market_price": 0,
+                "currency": "USD",
+                "currency_format": {
+                    "currency_symbol": "$",
+                    "decimal_place": 2,
+                    "decimal_symbol": ".",
+                    "separator": ",",
+                    "separator_index": [
+                        3,
+                        6,
+                        9,
+                        12,
+                        15,
+                        18
+                    ]
+                },
+                "seller_id": "7495545779705252648",
+                "source": "TikTok Shop",
+                "categories": [
+                    {
+                        "category_id": 601450,
+                        "category_name": "Beauty & Personal Care",
+                        "level": 1,
+                        "is_leaf": false,
+                        "parent_id": 0,
+                        "name_key": "magellan_601450"
+                    },
+                    {
+                        "category_id": 849672,
+                        "category_name": "Nasal & Oral Care",
+                        "level": 2,
+                        "is_leaf": false,
+                        "parent_id": 601450,
+                        "name_key": "magellan_849672"
+                    },
+                    {
+                        "category_id": 601697,
+                        "category_name": "Toothbrushes",
+                        "level": 3,
+                        "is_leaf": true,
+                        "parent_id": 849672,
+                        "name_key": "magellan_601697"
+                    }
+                ],
+                "images": [
+                    "https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/3d5a7389bdc24fdda8237bee8ef74dd3~tplv-omjb5zjo8w-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732"
+                ],
+                "cover_url": "https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/3d5a7389bdc24fdda8237bee8ef74dd3~tplv-omjb5zjo8w-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732",
+                "detail_url": "https://oec-api.tiktokv.com/view/fe_tiktok_ecommerce_upgrade/index.html?enter_from=video&hide_nav_bar=1&view_background_color_auto_dark=1&should_full_screen=1",
+                "seo_url": "https://www.tiktok.com/shop/pdp/big-brush-by-radius-usa-replaceable-head-toothbrush-for-comfort/1729463995211289384?source=anchor",
+                "skus": [
+                    {
+                        "sku_id": 1730964053012353832,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012419368,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012484904,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012550440,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012615976,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012681512,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012747048,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012812584,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012878120,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053012943656,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053013009192,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053013074728,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053013140264,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730964053013205800,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    }
+                ],
+                "product_status": 90,
+                "platform": 5,
+                "is_platform_product": false,
+                "ad_label": "#sponsored",
+                "ad_position": "1",
+                "formatted_price": "$0.00"
+            }
+        ]
+    }
+]
