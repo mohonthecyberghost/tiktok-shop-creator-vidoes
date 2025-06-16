@@ -22,6 +22,9 @@ A proof-of-concept application that scrapes product information from TikTok Shop
 - Silent operation (no audio output)
 - No log file creation
 - Organized JSON storage by video
+- Automatic browser cleanup and resource management
+- Improved error handling and recovery
+- Enhanced performance with optimized browser settings
 
 ## Requirements
 
@@ -96,6 +99,9 @@ TikTokShop-Intel/
 - JSON result storage
 - Silent operation (no audio output)
 - No log file creation
+- Automatic browser cleanup
+- Optimized browser settings for performance
+- Enhanced error handling and recovery
 
 ### Frontend
 - Modern responsive design using Tailwind CSS
@@ -128,6 +134,9 @@ TikTokShop-Intel/
 - No log file creation
 - Efficient memory usage
 - Automatic cleanup of resources
+- Optimized browser settings
+- Enhanced error recovery
+- Improved resource management
 
 ## Limitations
 
@@ -145,6 +154,8 @@ TikTokShop-Intel/
 - Add product image download capability
 - Implement proxy support
 - Add batch processing optimization
+- Add support for more browser types
+- Implement advanced caching mechanisms
 
 ## Contributing
 
