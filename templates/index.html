@@ -7,502 +7,169 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .loading-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
             border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
         }
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #f3f3f3;
+            border-radius: 2px;
+            margin-top: 1rem;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 2px;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">TikTok Product Scraper</h1>
-        
-        <!-- History Section -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-gray-800">Scraping History</h2>
-                <button onclick="toggleHistory()" class="text-blue-500 hover:text-blue-700">
-                    <span id="historyToggleText">Show History</span>
-                </button>
-            </div>
-            <div id="historySection" class="hidden">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Videos</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Products</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {% for item in history %}
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.timestamp }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.video_count }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.total_products }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button onclick="viewHistoryFile('{{ item.file_name }}')" 
-                                        class="text-blue-500 hover:text-blue-700 mr-3">
-                                        View
-                                    </button>
-                                    <button onclick="downloadHistoryFile('{{ item.file_name }}')" 
-                                        class="text-green-500 hover:text-green-700">
-                                        Download
-                                    </button>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Input Form -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="videoUrls">
-                    TikTok Video URLs (one per line)
-                </label>
-                <textarea id="videoUrls" rows="5" 
-                    class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline"
-                    placeholder="https://www.tiktok.com/@user/video/1234567890"></textarea>
-            </div>
-            <button id="processBtn" 
-                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Process Videos
-            </button>
-        </div>
-
-        <!-- Progress Section -->
-        <div id="progressSection" class="hidden bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">Processing Status</h2>
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">TikTok Product Scraper</h1>
             
-            <!-- Progress Bar -->
-            <div class="mb-6">
-                <div class="flex justify-between mb-2">
-                    <span class="text-sm font-medium text-gray-700">Overall Progress</span>
-                    <span class="text-sm font-medium text-gray-700"><span id="progressPercentage">0</span>%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-                </div>
-            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <form id="scrapeForm" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                            TikTok Creator Username
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter username (e.g., @username)"
+                            required
+                        >
+                    </div>
 
-            <!-- Current Video Info -->
-            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-gray-700">Current Video</span>
-                    <span class="text-sm text-gray-600"><span id="currentVideo">0</span> of <span id="totalVideos">0</span></span>
-                </div>
-                <p class="text-sm text-gray-600 break-all" id="currentUrl"></p>
-            </div>
+                    <div>
+                        <label for="video_limit" class="block text-sm font-medium text-gray-700 mb-2">
+                            Number of Videos to Process
+                        </label>
+                        <div class="flex items-center space-x-4">
+                            <input
+                                type="range"
+                                id="video_limit"
+                                name="video_limit"
+                                min="1"
+                                max="50"
+                                value="10"
+                                class="flex-1"
+                                oninput="updateLimitValue(this.value)"
+                            >
+                            <span id="limitValue" class="text-lg font-medium text-gray-700">10</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">Maximum number of videos to process (1-50)</p>
+                    </div>
 
-            <!-- Status Log -->
-            <div class="mb-4">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-gray-700">Status Log</span>
-                    <button id="clearLogBtn" class="text-xs text-gray-500 hover:text-gray-700">Clear Log</button>
-                </div>
-                <div id="statusLog" class="bg-gray-50 rounded-lg p-4 h-48 overflow-y-auto font-mono text-sm">
-                    <div class="text-gray-500">Waiting to start...</div>
-                </div>
-            </div>
-
-            <!-- Status Indicators -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="p-3 bg-gray-50 rounded-lg">
-                    <div class="text-sm font-medium text-gray-700 mb-1">Status</div>
-                    <div id="currentStatus" class="text-sm text-gray-600">Waiting</div>
-                </div>
-                <div class="p-3 bg-gray-50 rounded-lg">
-                    <div class="text-sm font-medium text-gray-700 mb-1">Products Found</div>
-                    <div id="productsFound" class="text-sm text-gray-600">0</div>
+                    <div class="flex justify-center">
+                        <button
+                            type="submit"
+                            class="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                        >
+                            Start Scraping
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="result" class="mt-6 hidden">
+                    <div class="p-4 rounded-md">
+                        <p id="resultMessage" class="text-center"></p>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Results Section -->
-        <div id="resultsSection" class="hidden bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">Results</h2>
-            <div id="resultsContent" class="space-y-6"></div>
+    <div id="loading" class="loading">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p class="text-lg font-medium text-gray-700">Scraping in progress...</p>
+            <p class="text-sm text-gray-500 mt-2">This may take a few minutes</p>
+            <div class="progress-bar">
+                <div id="progressBarFill" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentTaskId = null;
-        let statusCheckInterval = null;
+        function updateLimitValue(value) {
+            document.getElementById('limitValue').textContent = value;
+        }
 
-        document.getElementById('processBtn').addEventListener('click', async () => {
-            const videoUrls = document.getElementById('videoUrls').value
-                .split('\n')
-                .map(url => url.trim())
-                .filter(url => url);
-
-            if (videoUrls.length === 0) {
-                alert('Please enter at least one video URL');
-                return;
-            }
-
-            // Show progress section
-            document.getElementById('progressSection').classList.remove('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            document.getElementById('processBtn').disabled = true;
-            document.getElementById('processBtn').classList.add('opacity-50');
-
+        document.getElementById('scrapeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const resultMessage = document.getElementById('resultMessage');
+            const progressBar = document.getElementById('progressBarFill');
+            
+            // Show loading
+            loading.style.display = 'block';
+            result.classList.add('hidden');
+            progressBar.style.width = '0%';
+            
             try {
-                const response = await fetch('/process', {
+                const formData = new FormData(form);
+                const response = await fetch('/scrape', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ video_urls: videoUrls }),
+                    body: formData
                 });
 
                 const data = await response.json();
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-
-                currentTaskId = data.task_id;
-                startStatusCheck();
-            } catch (error) {
-                alert('Error: ' + error.message);
-                resetUI();
-            }
-        });
-
-        function startStatusCheck() {
-            if (statusCheckInterval) {
-                clearInterval(statusCheckInterval);
-            }
-
-            // Check status immediately
-            checkStatus();
-            // Then check every second
-            statusCheckInterval = setInterval(checkStatus, 1000);
-        }
-
-        async function checkStatus() {
-            if (!currentTaskId) return;
-
-            try {
-                const response = await fetch(`/status/${currentTaskId}`);
-                const data = await response.json();
-
-                if (data.error) {
-                    if (data.error === 'Task not found') {
-                        addLogEntry('Task completed or expired. Checking for final results...');
-                        // Try to get the final results one last time
-                        const finalResponse = await fetch(`/status/${currentTaskId}`);
-                        const finalData = await finalResponse.json();
-                        if (!finalData.error && finalData.results) {
-                            addLogEntry('Found final results!');
-                            showResults(finalData.results);
-                        } else {
-                            throw new Error('Could not retrieve final results');
-                        }
-                    } else {
-                        throw new Error(data.error);
-                    }
-                    return;
-                }
-
-                updateProgress(data);
-
-                if (data.status === 'completed' || data.status === 'error') {
-                    clearInterval(statusCheckInterval);
-                    if (data.status === 'completed') {
-                        addLogEntry('Processing completed successfully!');
-                        showResults(data.results);
-                    } else {
-                        addLogEntry(`Error: ${data.error}`);
-                        alert('Error: ' + data.error);
-                    }
-                    resetUI();
-                }
-            } catch (error) {
-                console.error('Status check error:', error);
-                addLogEntry(`Error checking status: ${error.message}`);
-                clearInterval(statusCheckInterval);
-                resetUI();
-            }
-        }
-
-        function updateProgress(data) {
-            if (data.current_video && data.total_videos) {
-                const progress = (data.current_video / data.total_videos) * 100;
-                document.getElementById('progressBar').style.width = `${progress}%`;
-                document.getElementById('progressPercentage').textContent = Math.round(progress);
-                document.getElementById('currentVideo').textContent = data.current_video;
-                document.getElementById('totalVideos').textContent = data.total_videos;
-                document.getElementById('currentUrl').textContent = data.current_url;
                 
-                // Update status log
-                addLogEntry(`Processing video ${data.current_video} of ${data.total_videos}`);
-                addLogEntry(`URL: ${data.current_url}`);
-            }
-
-            // Update status
-            document.getElementById('currentStatus').textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-            
-            // Update products found if available
-            if (data.results) {
-                const totalProducts = data.results.reduce((sum, video) => sum + video.products.length, 0);
-                document.getElementById('productsFound').textContent = totalProducts;
-            }
-        }
-
-        function addLogEntry(message) {
-            const logContainer = document.getElementById('statusLog');
-            const entry = document.createElement('div');
-            entry.className = 'text-gray-600 mb-1';
-            
-            // Add timestamp
-            const now = new Date();
-            const timestamp = now.toLocaleTimeString();
-            entry.innerHTML = `<span class="text-gray-400">[${timestamp}]</span> ${message}`;
-            
-            logContainer.appendChild(entry);
-            logContainer.scrollTop = logContainer.scrollHeight;
-        }
-
-        // Add clear log functionality
-        document.getElementById('clearLogBtn').addEventListener('click', () => {
-            const logContainer = document.getElementById('statusLog');
-            logContainer.innerHTML = '<div class="text-gray-500">Log cleared</div>';
-        });
-
-        function showResults(results) {
-            const resultsContent = document.getElementById('resultsContent');
-            resultsContent.innerHTML = '';
-
-            results.forEach(videoResult => {
-                const videoDiv = document.createElement('div');
-                videoDiv.className = 'border rounded-lg p-4 mb-6';
-                
-                const videoHeader = document.createElement('div');
-                videoHeader.className = 'flex items-center justify-between mb-4';
-                videoHeader.innerHTML = `
-                    <h3 class="text-lg font-semibold text-gray-800">Video: ${videoResult.video_url}</h3>
-                    <div class="flex space-x-2">
-                        <a href="${videoResult.video_url}" target="_blank" 
-                            class="text-blue-500 hover:text-blue-700 text-sm">
-                            Open Video
-                        </a>
-                        <button onclick="downloadVideoJson(${JSON.stringify(videoResult).replace(/"/g, '&quot;')})" 
-                            class="text-green-500 hover:text-green-700 text-sm">
-                            Download JSON
-                        </button>
-                        <button onclick="toggleJsonView(this)" 
-                            class="text-purple-500 hover:text-purple-700 text-sm">
-                            View JSON
-                        </button>
-                    </div>
-                `;
-                videoDiv.appendChild(videoHeader);
-
-                // Add JSON view section (initially hidden)
-                const jsonView = document.createElement('div');
-                jsonView.className = 'hidden mt-4';
-                jsonView.innerHTML = `
-                    <pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm">${JSON.stringify(videoResult, null, 2)}</pre>
-                `;
-                videoDiv.appendChild(jsonView);
-
-                // Add products section
-                const productsSection = document.createElement('div');
-                productsSection.className = 'mt-4';
-                
-                if (videoResult.products && videoResult.products.length > 0) {
-                    videoResult.products.forEach(product => {
-                        const productDiv = document.createElement('div');
-                        productDiv.className = 'border rounded-lg p-4 mb-4 bg-white';
-                        
-                        // Product header with title and price
-                        const productHeader = document.createElement('div');
-                        productHeader.className = 'flex justify-between items-start mb-2';
-                        productHeader.innerHTML = `
-                            <h4 class="text-md font-medium text-gray-800">${product.title}</h4>
-                            <span class="text-lg font-semibold text-green-600">${product.formatted_price || product.price}</span>
-                        `;
-                        productDiv.appendChild(productHeader);
-
-                        // Product details
-                        const productDetails = document.createElement('div');
-                        productDetails.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 mt-4';
-                        
-                        // Product images
-                        if (product.images && product.images.length > 0) {
-                            const imagesDiv = document.createElement('div');
-                            imagesDiv.className = 'space-y-2';
-                            imagesDiv.innerHTML = `
-                                <h5 class="text-sm font-medium text-gray-700">Product Images:</h5>
-                                <div class="flex flex-wrap gap-2">
-                                    ${product.images.map(img => `
-                                        <img src="${img}" alt="Product image" 
-                                            class="w-60 h-60 object-cover rounded-lg border"
-                                            onclick="window.open('${img}', '_blank')">
-                                    `).join('')}
-                                </div>
-                            `;
-                            productDetails.appendChild(imagesDiv);
-                        }
-
-                        // Product info
-                        const infoDiv = document.createElement('div');
-                        infoDiv.className = 'space-y-2';
-                        infoDiv.innerHTML = `
-                            <div class="text-sm">
-                                <span class="font-medium">Product ID:</span> ${product.product_id}
-                            </div>
-                            <div class="text-sm">
-                                <span class="font-medium">Seller ID:</span> ${product.seller_id}
-                            </div>
-                            ${product.categories ? `
-                                <div class="text-sm">
-                                    <span class="font-medium">Categories:</span>
-                                    <div class="flex flex-wrap gap-1 mt-1">
-                                        ${product.categories.map(cat => `
-                                            <span class="px-2 py-1 bg-gray-100 rounded-full text-xs">${cat}</span>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            ` : ''}
-                            ${product.detail_url ? `
-                                <div class="text-sm mt-4">
-                                    <a href="${product.seo_url}" target="_blank" 
-                                        class="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 shadow-sm">
-                                        View Product Details
-                                    </a>
-                                </div>
-                            ` : ''}
-                        `;
-                        productDetails.appendChild(infoDiv);
-                        
-                        productDiv.appendChild(productDetails);
-                        productsSection.appendChild(productDiv);
-                    });
+                if (response.ok) {
+                    result.classList.remove('hidden');
+                    result.classList.add('bg-green-50');
+                    resultMessage.textContent = data.message;
                 } else {
-                    productsSection.innerHTML = `
-                        <div class="text-gray-500 text-center py-4">
-                            No products found in this video
-                        </div>
-                    `;
+                    result.classList.remove('hidden');
+                    result.classList.add('bg-red-50');
+                    resultMessage.textContent = data.error;
                 }
-                
-                videoDiv.appendChild(productsSection);
-                resultsContent.appendChild(videoDiv);
-            });
-
-            document.getElementById('resultsSection').classList.remove('hidden');
-        }
-
-        // Function to toggle JSON view
-        function toggleJsonView(button) {
-            const jsonView = button.parentElement.parentElement.nextElementSibling;
-            jsonView.classList.toggle('hidden');
-            button.textContent = jsonView.classList.contains('hidden') ? 'View JSON' : 'Hide JSON';
-        }
-
-        // Function to download JSON
-        function downloadVideoJson(data) {
-            try {
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `video_products_${new Date().toISOString().slice(0,19).replace(/[:]/g, '-')}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
             } catch (error) {
-                console.error('Error downloading JSON:', error);
-                alert('Error downloading JSON file. Please try again.');
+                result.classList.remove('hidden');
+                result.classList.add('bg-red-50');
+                resultMessage.textContent = 'An error occurred while scraping. Please try again.';
+            } finally {
+                loading.style.display = 'none';
             }
-        }
-
-        function resetUI() {
-            document.getElementById('processBtn').disabled = false;
-            document.getElementById('processBtn').classList.remove('opacity-50');
-            document.getElementById('progressBar').style.width = '0%';
-            document.getElementById('progressPercentage').textContent = '0';
-            document.getElementById('currentStatus').textContent = 'Waiting';
-            document.getElementById('productsFound').textContent = '0';
-            currentTaskId = null;
-            
-            // Clear status check interval
-            if (statusCheckInterval) {
-                clearInterval(statusCheckInterval);
-                statusCheckInterval = null;
-            }
-        }
-
-        function toggleHistory() {
-            const historySection = document.getElementById('historySection');
-            const toggleText = document.getElementById('historyToggleText');
-            historySection.classList.toggle('hidden');
-            toggleText.textContent = historySection.classList.contains('hidden') ? 'Show History' : 'Hide History';
-        }
-
-        async function viewHistoryFile(filename) {
-            try {
-                const response = await fetch(`/history/${filename}`);
-                const data = await response.json();
-                
-                // Create modal for viewing
-                const modal = document.createElement('div');
-                modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full';
-                modal.innerHTML = `
-                    <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-medium">History File: ${filename}</h3>
-                            <button onclick="this.parentElement.parentElement.parentElement.remove()" 
-                                class="text-gray-500 hover:text-gray-700">
-                                ✕
-                            </button>
-                        </div>
-                        <div class="max-h-96 overflow-y-auto">
-                            <pre class="bg-gray-50 p-4 rounded-lg text-sm">${JSON.stringify(data, null, 2)}</pre>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            } catch (error) {
-                console.error('Error loading history file:', error);
-                alert('Error loading history file. Please try again.');
-            }
-        }
-
-        async function downloadHistoryFile(filename) {
-            try {
-                const response = await fetch(`/history/${filename}`);
-                const data = await response.json();
-                
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            } catch (error) {
-                console.error('Error downloading history file:', error);
-                alert('Error downloading history file. Please try again.');
-            }
-        }
+        });
     </script>
 </body>
 </html> 

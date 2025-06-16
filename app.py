@@ -121,8 +121,53 @@ def process_videos(video_urls, task_id):
 
 @app.route('/')
 def index():
-    history = get_scraping_history()
-    return render_template('index.html', history=history)
+    return render_template('index.html')
+
+@app.route('/scrape', methods=['POST'])
+def scrape():
+    try:
+        # Get form data
+        username = request.form.get('username', '').strip()
+        if username.startswith('@'):
+            username = username[1:]  # Remove @ if present
+        
+        if not username:
+            return jsonify({'error': 'No username provided'}), 400
+        
+        # Get video limit (default to 10 if not specified)
+        try:
+            video_limit = int(request.form.get('video_limit', 10))
+        except ValueError:
+            video_limit = 10
+        
+        # Initialize scraper
+        scraper = TikTokScraper()
+        
+        try:
+            # Get videos with products from creator's profile
+            videos = scraper.get_creator_videos(username, None, None, limit=video_limit)
+            
+            # Save results to file
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            output_file = f'product-jsons/products_{username}_{timestamp}.json'
+            
+            # Create product-jsons directory if it doesn't exist
+            os.makedirs('product-jsons', exist_ok=True)
+            
+            with open(output_file, 'w', encoding='utf-8') as f:
+                json.dump(videos, f, indent=4)
+            
+            return jsonify({
+                'success': True,
+                'message': f'Successfully scraped {len(videos)} videos with products from @{username}',
+                'output_file': output_file
+            })
+            
+        finally:
+            scraper.close()
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/history/<filename>')
 def get_history_file(filename):

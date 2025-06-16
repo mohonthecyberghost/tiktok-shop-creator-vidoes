@@ -3,15 +3,17 @@ import os
 import sys
 import logging
 import atexit
-from datetime import datetime
+from datetime import datetime, timedelta
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 import json
 import re
 import platform
 from urllib.parse import urlparse
+import dateutil.parser
 
 # Configure logging
 def setup_logging():
@@ -58,7 +60,7 @@ class TikTokScraper:
             options.add_argument('--mute-audio')  # Disable audio
             
             self.driver = uc.Chrome(options=options)
-            self.driver.set_page_load_timeout(30)
+            self.driver.set_page_load_timeout(300)
             
             # Set user agent after driver initialization
             self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {
@@ -70,6 +72,232 @@ class TikTokScraper:
         except Exception as e:
             self.logger.error(f"Error setting up Chrome WebDriver: {str(e)}")
             raise
+
+    def get_creator_videos(self, username, start_date, end_date, limit=10):
+        """Get videos from a creator's profile and extract products from each video page."""
+        try:
+            # Visit creator's profile
+            profile_url = f'https://www.tiktok.com/@{username}'
+            self.logger.info(f"Accessing creator profile: {profile_url}")
+            
+            max_retries = 3
+            retry_count = 0
+            
+            while retry_count < max_retries:
+                try:
+                    self.driver.get(profile_url)
+                    
+                    # Wait for initial page load
+                    WebDriverWait(self.driver, 30).until(
+                        EC.presence_of_element_located((By.TAG_NAME, "body"))
+                    )
+                    
+                    # Wait for video elements to be present
+                    WebDriverWait(self.driver, 30).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-e2e="user-post-item"]'))
+                    )
+                    
+                    time.sleep(5)  # Additional wait for dynamic content
+                    break
+                    
+                except Exception as e:
+                    retry_count += 1
+                    self.logger.error(f"Error loading profile page (attempt {retry_count}/{max_retries}): {str(e)}")
+                    
+                    if retry_count < max_retries:
+                        # Try to recover by reinitializing the driver
+                        self.logger.info("Attempting to recover by reinitializing WebDriver...")
+                        try:
+                            if self.driver:
+                                self.driver.quit()
+                        except:
+                            pass
+                        self.driver = None
+                        self.setup_driver()
+                        time.sleep(5)  # Wait before retrying
+                    else:
+                        raise Exception(f"Failed to load profile page after {max_retries} attempts")
+            
+            # Scroll to load more videos with improved error handling
+            self.logger.info("Starting to scroll profile page to load more videos...")
+            last_height = self.driver.execute_script("return document.body.scrollHeight")
+            scroll_count = 0
+            max_scroll_attempts = 20  # Limit maximum scroll attempts
+            
+            while scroll_count < max_scroll_attempts:
+                try:
+                    # Scroll down
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    time.sleep(3)  # Increased wait time for content to load
+                    scroll_count += 1
+                    
+                    # Calculate new scroll height
+                    new_height = self.driver.execute_script("return document.body.scrollHeight")
+                    if new_height == last_height:
+                        self.logger.info(f"Finished scrolling after {scroll_count} attempts")
+                        break
+                    last_height = new_height
+                    self.logger.info(f"Scrolled {scroll_count} times, new height: {new_height}")
+                    
+                except Exception as e:
+                    self.logger.error(f"Error during scrolling (attempt {scroll_count + 1}): {str(e)}")
+                    time.sleep(2)  # Wait before retrying scroll
+                    continue
+            
+            # Get all video URLs
+            self.logger.info("Collecting video URLs from profile page...")
+            video_urls = []
+            try:
+                # Find all video elements
+                video_elements = self.driver.find_elements(By.CSS_SELECTOR, '[data-e2e="user-post-item"] a')
+                self.logger.info(f"Found {len(video_elements)} video elements on profile page")
+                
+                for element in video_elements:
+                    try:
+                        url = element.get_attribute('href')
+                        if url and '/video/' in url:
+                            video_urls.append(url)
+                            self.logger.info(f"Added video URL: {url}")
+                    except Exception as e:
+                        self.logger.error(f"Error getting URL from element: {str(e)}")
+                        continue
+                
+                self.logger.info(f"Successfully collected {len(video_urls)} video URLs")
+            except Exception as e:
+                self.logger.error(f"Error getting video URLs: {str(e)}")
+            
+            
+            # Process each video URL
+            self.logger.info(f"Starting to process {min(len(video_urls), limit)} videos...")
+            videos = []
+            for index, video_url in enumerate(video_urls[:limit], 1):
+                self.logger.info(f"Processing video {index}/{min(len(video_urls), limit)}: {video_url}")
+                max_retries = 3
+                retry_count = 0
+                
+                while retry_count < max_retries:
+                    try:
+                        # Navigate to video page
+                        self.logger.info(f"Navigating to video page (attempt {retry_count + 1}/{max_retries})")
+                        self.driver.get(video_url)
+                        
+                        # Wait for the page to be fully loaded with multiple conditions
+                        self.logger.info("Waiting for page to load...")
+                        WebDriverWait(self.driver, 30).until(
+                            EC.presence_of_element_located((By.TAG_NAME, "body"))
+                        )
+                        
+                        # Wait for video player to be present
+                        WebDriverWait(self.driver, 30).until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-e2e="video-player"]'))
+                        )
+                        
+                        # Additional wait for dynamic content
+                        self.logger.info("Waiting for dynamic content...")
+                        time.sleep(8)  # Increased wait time for dynamic content
+                        
+                        # Get page HTML
+                        html_content = self.driver.page_source
+                        
+                        # Try to get posting time from script data
+                        posted_time = None
+                        try:
+                            # Look for createTime in script tag
+                            script_pattern = r'<script[^>]*>.*?"createTime":\s*"?(\d+)"?.*?</script>'
+                            script_match = re.search(script_pattern, html_content, re.DOTALL)
+                            if script_match:
+                                timestamp = int(script_match.group(1))
+                                posted_time = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+                                self.logger.info(f"Found posting time from timestamp: {posted_time}")
+                            else:
+                                # Try alternative pattern for createTime
+                                alt_pattern = r'"createTime":\s*"?(\d+)"?'
+                                alt_match = re.search(alt_pattern, html_content)
+                                if alt_match:
+                                    timestamp = int(alt_match.group(1))
+                                    posted_time = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+                                    self.logger.info(f"Found posting time from alternative pattern: {posted_time}")
+                                else:
+                                    self.logger.warning("Could not find createTime in script data")
+                                    posted_time = "Unknown"
+                        except Exception as e:
+                            self.logger.error(f"Error getting posting time from script data: {str(e)}")
+                            posted_time = "Unknown"
+                        
+                        # Extract products
+                        self.logger.info("Extracting product information...")
+                        products = self.extract_product_info(html_content)
+                        
+                        if products:  # Only add videos that have products
+                            videos.append({
+                                'url': video_url,
+                                'posted_time': posted_time,
+                                'products': products
+                            })
+                            self.logger.info(f"Found {len(products)} products in video: {video_url}")
+                        else:
+                            self.logger.info(f"No products found in video: {video_url}")
+                        
+                        # If we got here, break the retry loop
+                        break
+                        
+                    except Exception as e:
+                        retry_count += 1
+                        self.logger.error(f"Error processing video {video_url} (attempt {retry_count}/{max_retries}): {str(e)}")
+                        
+                        if retry_count < max_retries:
+                            # Try to recover by reinitializing the driver
+                            self.logger.info("Attempting to recover by reinitializing WebDriver...")
+                            try:
+                                if self.driver:
+                                    self.driver.quit()
+                            except:
+                                pass
+                            self.driver = None
+                            self.setup_driver()
+                            time.sleep(5)  # Wait before retrying
+                        else:
+                            self.logger.error(f"Max retries reached for video {video_url}")
+                            break
+                
+                # Add a delay between processing videos
+                time.sleep(5)
+            
+            self.logger.info(f"Finished processing all videos. Found {len(videos)} videos with products")
+            return videos
+            
+        except Exception as e:
+            self.logger.error(f"Error getting creator videos: {str(e)}")
+            return []
+
+    def parse_tiktok_date(self, date_text):
+        """Parse TikTok date format to datetime object."""
+        try:
+            now = datetime.now()
+            
+            if 'ago' in date_text.lower():
+                # Handle relative dates
+                number = int(re.search(r'\d+', date_text).group())
+                
+                if 'min' in date_text.lower():
+                    return now - timedelta(minutes=number)
+                elif 'hour' in date_text.lower():
+                    return now - timedelta(hours=number)
+                elif 'day' in date_text.lower():
+                    return now - timedelta(days=number)
+                elif 'week' in date_text.lower():
+                    return now - timedelta(weeks=number)
+                elif 'month' in date_text.lower():
+                    return now - timedelta(days=number*30)
+                elif 'year' in date_text.lower():
+                    return now - timedelta(days=number*365)
+            else:
+                # Handle absolute dates
+                return dateutil.parser.parse(date_text)
+                
+        except Exception as e:
+            self.logger.error(f"Error parsing date '{date_text}': {str(e)}")
+            return datetime.now()
 
     def get_page_html(self, url):
         """Get the full HTML content of the page."""
@@ -103,25 +331,6 @@ class TikTokScraper:
                 # Get the full HTML content
                 html_content = self.driver.page_source
                 self.logger.info("Successfully retrieved page HTML")
-                
-                # Save HTML to file for inspection
-                with open('page_content.html', 'w', encoding='utf-8') as f:
-                    f.write(html_content)
-                self.logger.info("Saved HTML content to page_content.html")
-                
-                # Debug: Check if the script tag exists
-                if "__UNIVERSAL_DATA_FOR_REHYDRATION__" in html_content:
-                    self.logger.info("Found __UNIVERSAL_DATA_FOR_REHYDRATION__ in HTML")
-                else:
-                    self.logger.warning("__UNIVERSAL_DATA_FOR_REHYDRATION__ not found in HTML")
-                    # Save a debug file with all script tags
-                    script_tags = self.driver.find_elements(By.TAG_NAME, "script")
-                    with open('script_tags.txt', 'w', encoding='utf-8') as f:
-                        for script in script_tags:
-                            f.write(f"Script ID: {script.get_attribute('id')}\n")
-                            f.write(f"Script Type: {script.get_attribute('type')}\n")
-                            f.write("---\n")
-                    self.logger.info("Saved script tags to script_tags.txt")
                 
                 return html_content
                 
@@ -261,90 +470,116 @@ class TikTokScraper:
                                             'ad_position': extra_data.get('extra', {}).get('ad_label_position')
                                         }
                                         
-                                        # Clean up any remaining escape sequences in the title
-                                        if product_info['title']:
-                                            product_info['title'] = product_info['title'].encode().decode('unicode_escape')
-                                        if product_info['elastic_title']:
-                                            product_info['elastic_title'] = product_info['elastic_title'].encode().decode('unicode_escape')
-                                        
-                                        # Format the price with currency
-                                        if product_info['currency_format']:
+                                        # Add formatted price if available
+                                        if 'price' in product_info and 'currency_format' in product_info:
                                             currency_format = product_info['currency_format']
                                             price = product_info['price']
-                                            formatted_price = f"{currency_format.get('currency_symbol', '$')}{price:,.{currency_format.get('decimal_place', 2)}f}"
+                                            formatted_price = f"{currency_format.get('currency_symbol', '$')}{price:,.2f}"
                                             product_info['formatted_price'] = formatted_price
                                         
                                         products.append(product_info)
-                                        self.logger.info(f"Found product: {product_info['product_id']}")
-                                    
-                                except json.JSONDecodeError as e:
-                                    self.logger.error(f"Error parsing product extra data: {str(e)}")
+                                        
                                 except Exception as e:
-                                    self.logger.error(f"Error processing product data: {str(e)}")
-                                    self.logger.error(f"Product data: {product_data}")
-                            
-                        except json.JSONDecodeError as e:
-                            self.logger.error(f"Error parsing anchor extra data: {str(e)}")
+                                    self.logger.error(f"Error processing product {j+1} in anchor {i+1}: {str(e)}")
+                                    continue
+                                    
                         except Exception as e:
-                            self.logger.error(f"Error processing anchor data: {str(e)}")
-                            self.logger.error(f"Anchor data: {anchor}")
+                            self.logger.error(f"Error processing anchor {i+1}: {str(e)}")
+                            continue
                 
-                self.logger.info(f"Found {len(products)} products")
                 return products
                 
             except json.JSONDecodeError as e:
-                self.logger.error(f"Error parsing scope JSON: {str(e)}")
+                self.logger.error(f"Error parsing JSON data: {str(e)}")
                 return []
-            
+                
         except Exception as e:
             self.logger.error(f"Error extracting product info: {str(e)}")
             return []
 
     def close(self):
         """Close the WebDriver."""
-        try:
-            if self.driver:
+        if self.driver:
+            try:
                 self.driver.quit()
-                self.driver = None
-                self.logger.info("Chrome WebDriver closed successfully")
-        except Exception as e:
-            self.logger.error(f"Error closing Chrome WebDriver: {str(e)}")
+            except:
+                pass
             self.driver = None
 
 def main():
-    # List of video URLs to scrape
-    video_urls = []
+    # Get input from user
+    print("\nTikTok Creator Product Scraper")
+    print("==============================")
+    
+    # Get creator usernames
+    usernames = []
+    while True:
+        username = input("\nEnter TikTok creator username (or press Enter to finish): ").strip()
+        if not username:
+            break
+        usernames.append(username)
+    
+    if not usernames:
+        print("No usernames provided. Exiting...")
+        return
+    
+    # Get date range
+    while True:
+        try:
+            start_date_str = input("\nEnter start date (YYYY-MM-DD): ").strip()
+            end_date_str = input("Enter end date (YYYY-MM-DD): ").strip()
+            
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+            
+            if start_date > end_date:
+                print("Start date must be before end date. Please try again.")
+                continue
+                
+            break
+        except ValueError:
+            print("Invalid date format. Please use YYYY-MM-DD format.")
     
     scraper = TikTokScraper()
     
     try:
         all_results = []
         
-        for video_url in video_urls:
-            print(f"\nProcessing video: {video_url}")
+        for username in usernames:
+            print(f"\nProcessing creator: @{username}")
             
-            # Get page HTML
-            html_content = scraper.get_page_html(video_url)
-            if html_content:
-                # Extract product information
-                products = scraper.extract_product_info(html_content)
-                
-                # Add results for this video
-                video_results = {
-                    'video_url': video_url,
-                    'products': products
-                }
-                all_results.append(video_results)
-                
-                print(f"\nFound {len(products)} products for video:")
-                for product in products:
-                    print(f"\nProduct ID: {product['product_id']}")
-                    print(f"Title: {product['title']}")
-                    print(f"Price: {product.get('formatted_price', 'N/A')}")
-                    print(f"Number of images: {len(product['images'])}")
+            # Get products from creator's profile
+            products = scraper.get_creator_videos(username, start_date, end_date)
+            print(f"Found {len(products)} products for creator: @{username}")
             
-            # Add a small delay between requests
-            time.sleep(5)
+            # Process each product
+            for product in products:
+                print(f"\nProcessing product: {product['url']}")
+                
+                # Get page HTML
+                html_content = scraper.get_page_html(product['url'])
+                if html_content:
+                    # Extract product information
+                    products = scraper.extract_product_info(html_content)
+                    
+                    if products:
+                        # Add results for this product
+                        product_results = {
+                            'product_url': product['url'],
+                            'product_date': product['date'].isoformat(),
+                            'products': products
+                        }
+                        all_results.append(product_results)
+                        
+                        print(f"Found {len(products)} products for product:")
+                        for product in products:
+                            print(f"\nProduct ID: {product['product_id']}")
+                            print(f"Title: {product['title']}")
+                            print(f"Price: {product.get('formatted_price', 'N/A')}")
+                            print(f"Number of images: {len(product['images'])}")
+                
+                # Add a small delay between requests
+                time.sleep(5)
         
         # Save all results to a single JSON file
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
