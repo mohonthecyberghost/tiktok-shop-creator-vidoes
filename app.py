@@ -127,12 +127,14 @@ def index():
 def scrape():
     try:
         # Get form data
-        username = request.form.get('username', '').strip()
-        if username.startswith('@'):
-            username = username[1:]  # Remove @ if present
+        usernames_json = request.form.get('usernames', '[]')
+        try:
+            usernames = json.loads(usernames_json)
+        except json.JSONDecodeError:
+            return jsonify({'error': 'Invalid usernames format'}), 400
         
-        if not username:
-            return jsonify({'error': 'No username provided'}), 400
+        if not usernames:
+            return jsonify({'error': 'No usernames provided'}), 400
         
         # Get video limit (default to 10 if not specified)
         try:
@@ -140,26 +142,40 @@ def scrape():
         except ValueError:
             video_limit = 10
         
-        # Initialize scraper
-        scraper = TikTokScraper()
+        # Get review settings
+        scrape_reviews = request.form.get('scrape_reviews') == 'true'
+        max_reviews = None
+        if scrape_reviews:
+            try:
+                max_reviews = int(request.form.get('max_reviews')) if request.form.get('max_reviews') else None
+            except ValueError:
+                max_reviews = None
+        
+        # Initialize scraper with review settings
+        scraper = TikTokScraper(scrape_reviews=scrape_reviews, max_reviews=max_reviews)
         
         try:
-            # Get videos with products from creator's profile
-            videos = scraper.get_creator_videos(username, None, None, limit=video_limit)
+            all_results = []
+            
+            # Process each username
+            for username in usernames:
+                # Get videos with products from creator's profile
+                videos = scraper.get_creator_videos(username, limit=video_limit)
+                all_results.extend(videos)
             
             # Save results to file
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            output_file = f'product-jsons/products_{username}_{timestamp}.json'
+            output_file = f'product-jsons/products_{timestamp}.json'
             
             # Create product-jsons directory if it doesn't exist
             os.makedirs('product-jsons', exist_ok=True)
             
             with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(videos, f, indent=4)
+                json.dump(all_results, f, indent=4)
             
             return jsonify({
                 'success': True,
-                'message': f'Successfully scraped {len(videos)} videos with products from @{username}',
+                'message': f'Successfully scraped {len(all_results)} videos with products from {len(usernames)} creators',
                 'output_file': output_file
             })
             

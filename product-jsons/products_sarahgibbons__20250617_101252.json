@@ -1,0 +1,582 @@
+[
+    {
+        "url": "https://www.tiktok.com/@sarahgibbons_/video/7514389543848611102",
+        "posted_time": "2025-06-11 00:29:39",
+        "products": [
+            {
+                "product_id": "1730915552044946095",
+                "title": "Buy 1 Get 1,Foot Care Cream,Anti Cracked Foot Cream,Moisturizing,Anti Crack,Softening and Nourishing Cream for Dry,Cracked Feet,Remove Dead Skin and Moisturize Dry Skin",
+                "elastic_title": "Buy 1 Get 1,Foot Care Cream,An",
+                "price": 0,
+                "market_price": 0,
+                "currency": "USD",
+                "currency_format": {
+                    "currency_symbol": "$",
+                    "decimal_place": 2,
+                    "decimal_symbol": ".",
+                    "separator": ",",
+                    "separator_index": [
+                        3,
+                        6,
+                        9,
+                        12,
+                        15,
+                        18
+                    ]
+                },
+                "seller_id": "7496011253878196911",
+                "source": "TikTok Shop",
+                "categories": [
+                    {
+                        "category_id": 601450,
+                        "category_name": "Beauty & Personal Care",
+                        "level": 1,
+                        "is_leaf": false,
+                        "parent_id": 0,
+                        "name_key": "magellan_601450"
+                    },
+                    {
+                        "category_id": 849032,
+                        "category_name": "Hand, Foot & Nail Care",
+                        "level": 2,
+                        "is_leaf": false,
+                        "parent_id": 601450,
+                        "name_key": "magellan_849032"
+                    },
+                    {
+                        "category_id": 601480,
+                        "category_name": "Hand & Foot Lotions, Creams & Scrubs",
+                        "level": 3,
+                        "is_leaf": true,
+                        "parent_id": 849032,
+                        "name_key": "magellan_601480"
+                    }
+                ],
+                "images": [
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/1bd046baf3e142fd9e49198793ac632d~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732"
+                ],
+                "cover_url": "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/1bd046baf3e142fd9e49198793ac632d~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732",
+                "detail_url": "https://oec-api.tiktokv.com/view/fe_tiktok_ecommerce_upgrade/index.html?enter_from=video&hide_nav_bar=1&view_background_color_auto_dark=1&should_full_screen=1",
+                "seo_url": "https://www.tiktok.com/shop/pdp/moisturizing-foot-cream-by-care-anti-dry-for-cracked-feet-skin/1730915552044946095?source=anchor",
+                "skus": [
+                    {
+                        "sku_id": 1730915552045011631,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    }
+                ],
+                "product_status": 90,
+                "platform": 5,
+                "is_platform_product": false,
+                "ad_label": "#sponsored",
+                "ad_position": "1",
+                "formatted_price": "$0.00"
+            }
+        ]
+    },
+    {
+        "url": "https://www.tiktok.com/@sarahgibbons_/video/7516761475462090015",
+        "posted_time": "2025-06-17 09:53:57",
+        "products": [
+            {
+                "product_id": "1729388503992537528",
+                "title": "Women's Double Strap Casual Sandals, Classy Sandal, Two Strap Sandals, Buckle Sandals, Comfortable Sandals, Flat Sandals, Elegant Sandal, Summer 2025 Outdoor Beach Shoes Slippers for Women & Girls",
+                "elastic_title": "",
+                "price": 0,
+                "market_price": 0,
+                "currency": "USD",
+                "currency_format": {
+                    "currency_symbol": "$",
+                    "decimal_place": 2,
+                    "decimal_symbol": ".",
+                    "separator": ",",
+                    "separator_index": [
+                        3,
+                        6,
+                        9,
+                        12,
+                        15,
+                        18
+                    ]
+                },
+                "seller_id": "8646927634227302840",
+                "source": "TikTok Shop",
+                "categories": [
+                    {
+                        "category_id": 601352,
+                        "category_name": "Shoes",
+                        "level": 1,
+                        "is_leaf": false,
+                        "parent_id": 0,
+                        "name_key": "magellan_601352"
+                    },
+                    {
+                        "category_id": 900488,
+                        "category_name": "Women's Shoes",
+                        "level": 2,
+                        "is_leaf": false,
+                        "parent_id": 601352,
+                        "name_key": "magellan_900488"
+                    },
+                    {
+                        "category_id": 601405,
+                        "category_name": "Slippers",
+                        "level": 3,
+                        "is_leaf": true,
+                        "parent_id": 900488,
+                        "name_key": "magellan_601405"
+                    }
+                ],
+                "images": [
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/293f06d20a29420885d7d5ffef079908~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732"
+                ],
+                "cover_url": "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/293f06d20a29420885d7d5ffef079908~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732",
+                "detail_url": "https://oec-api.tiktokv.com/view/fe_tiktok_ecommerce_upgrade/index.html?enter_from=video&hide_nav_bar=1&view_background_color_auto_dark=1&should_full_screen=1",
+                "seo_url": "https://www.tiktok.com/shop/pdp/womens-fashion-double-strap-slides-comfortable-beach-sandals-water-resistant-pvc-casual-summer-footw/1729388503992537528?source=anchor",
+                "skus": [
+                    {
+                        "sku_id": 1729394900316950968,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729394900317016504,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729394900317082040,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729394900317147576,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729394900317213112,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729394900317278648,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730189321895383480,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730189321895449016,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777022120376,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777022185912,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777022251448,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777022316984,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777022382520,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777022448056,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388503992603064,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388503992668600,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388503992734136,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388503992799672,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388503992865208,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388503992930744,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730189321895514552,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730189321895580088,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388468148670904,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388468148736440,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388468148801976,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388468148867512,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388468148933048,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729388468148998584,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777021727160,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777021792696,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777021858232,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777021923768,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777021989304,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729391777022054840,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088270973047224,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088270973112760,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088270973178296,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088270973243832,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088270973309368,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289552699832,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289552765368,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289552830904,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289552896440,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289552961976,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553027512,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553093048,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553158584,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553224120,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553289656,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553355192,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553420728,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553486264,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553551800,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553617336,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553682872,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553748408,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553813944,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553879480,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289553945016,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289554010552,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1731088289554076088,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    }
+                ],
+                "product_status": 90,
+                "platform": 5,
+                "is_platform_product": false,
+                "ad_label": "#sponsored",
+                "ad_position": "1",
+                "formatted_price": "$0.00"
+            }
+        ]
+    },
+    {
+        "url": "https://www.tiktok.com/@sarahgibbons_/video/7516751136544591135",
+        "posted_time": "2025-06-17 09:13:41",
+        "products": [
+            {
+                "product_id": "1729438173865349349",
+                "title": "SALKING Premium Scented Diffuser Oils Set - 6 Bottles x 0.34 oz, Euro Dropper, Tamper Evident Caps, 10ml Amber Bottles, GC MS Tested, Long Lasting Soothing Fragrance for Home Ambiance Perfume Aroma",
+                "elastic_title": "FREE OIL DIFFUSER",
+                "price": 0,
+                "market_price": 0,
+                "currency": "USD",
+                "currency_format": {
+                    "currency_symbol": "$",
+                    "decimal_place": 2,
+                    "decimal_symbol": ".",
+                    "separator": ",",
+                    "separator_index": [
+                        3,
+                        6,
+                        9,
+                        12,
+                        15,
+                        18
+                    ]
+                },
+                "seller_id": "7495305983587944677",
+                "source": "TikTok Shop",
+                "categories": [
+                    {
+                        "category_id": 600942,
+                        "category_name": "Household Appliances",
+                        "level": 1,
+                        "is_leaf": false,
+                        "parent_id": 0,
+                        "name_key": "magellan_600942"
+                    },
+                    {
+                        "category_id": 844808,
+                        "category_name": "Home Appliances",
+                        "level": 2,
+                        "is_leaf": false,
+                        "parent_id": 600942,
+                        "name_key": "magellan_844808"
+                    },
+                    {
+                        "category_id": 601090,
+                        "category_name": "Air Purifiers",
+                        "level": 3,
+                        "is_leaf": true,
+                        "parent_id": 844808,
+                        "name_key": "magellan_601090"
+                    }
+                ],
+                "images": [
+                    "https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/ed0c85f01bab495f9f7b6a4fd769648a~tplv-omjb5zjo8w-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732"
+                ],
+                "cover_url": "https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/ed0c85f01bab495f9f7b6a4fd769648a~tplv-omjb5zjo8w-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732",
+                "detail_url": "https://oec-api.tiktokv.com/view/fe_tiktok_ecommerce_upgrade/index.html?enter_from=video&hide_nav_bar=1&view_background_color_auto_dark=1&should_full_screen=1",
+                "seo_url": "https://www.tiktok.com/shop/pdp/diffuser-oils-set-by-salking-6-premium-0-34-oz-fragrance-oils/1729438173865349349?source=anchor",
+                "skus": [
+                    {
+                        "sku_id": 1729611462325473509,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730500241238757605,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729603053541757157,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730969067063054565,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729611462325342437,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729603053541691621,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730969067063185637,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730969067063120101,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729744609067700453,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729611462325407973,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1729611462325539045,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730500241238692069,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    }
+                ],
+                "product_status": 90,
+                "platform": 5,
+                "is_platform_product": false,
+                "ad_label": "#sponsored",
+                "ad_position": "1",
+                "formatted_price": "$0.00"
+            }
+        ]
+    }
+]

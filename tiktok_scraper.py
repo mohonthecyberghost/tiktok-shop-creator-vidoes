@@ -14,6 +14,7 @@ import re
 import platform
 from urllib.parse import urlparse
 import dateutil.parser
+from selenium.common.exceptions import NoSuchElementException
 
 # Configure logging
 def setup_logging():
@@ -29,9 +30,11 @@ def setup_logging():
     return logging.getLogger(__name__)
 
 class TikTokScraper:
-    def __init__(self):
+    def __init__(self, scrape_reviews=True, max_reviews=None):
         self.logger = setup_logging()
         self.driver = None
+        self.scrape_reviews = scrape_reviews
+        self.max_reviews = max_reviews
         self.setup_driver()
         
     def setup_driver(self):
@@ -73,7 +76,7 @@ class TikTokScraper:
             self.logger.error(f"Error setting up Chrome WebDriver: {str(e)}")
             raise
 
-    def get_creator_videos(self, username, start_date, end_date, limit=10):
+    def get_creator_videos(self, username, limit=10):
         """Get videos from a creator's profile and extract products from each video page."""
         try:
             # Visit creator's profile
@@ -187,10 +190,6 @@ class TikTokScraper:
                             EC.presence_of_element_located((By.TAG_NAME, "body"))
                         )
                         
-                        # Wait for video player to be present
-                        WebDriverWait(self.driver, 30).until(
-                            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-e2e="video-player"]'))
-                        )
                         
                         # Additional wait for dynamic content
                         self.logger.info("Waiting for dynamic content...")
@@ -390,7 +389,7 @@ class TikTokScraper:
                 if not default_scope:
                     self.logger.error("No __DEFAULT_SCOPE__ found in data")
                     return []
-                
+
                 # Handle webapp.video-detail which might be a list
                 webapp_video_detail = default_scope.get('webapp.video-detail', {})
                 if isinstance(webapp_video_detail, list):
@@ -476,6 +475,16 @@ class TikTokScraper:
                                             price = product_info['price']
                                             formatted_price = f"{currency_format.get('currency_symbol', '$')}{price:,.2f}"
                                             product_info['formatted_price'] = formatted_price
+
+                                        # Scrape additional product details if seo_url is available
+                                        if product_info.get('seo_url'):
+                                            try:
+                                                self.logger.info(f"Scraping additional details for product: {product_info['product_id']}")
+                                                product_details = self.scrape_product_details(product_info['seo_url'])
+                                                if product_details:
+                                                    product_info.update(product_details)
+                                            except Exception as e:
+                                                self.logger.error(f"Error scraping additional product details: {str(e)}")
                                         
                                         products.append(product_info)
                                         
@@ -492,10 +501,159 @@ class TikTokScraper:
             except json.JSONDecodeError as e:
                 self.logger.error(f"Error parsing JSON data: {str(e)}")
                 return []
-                
+            
         except Exception as e:
             self.logger.error(f"Error extracting product info: {str(e)}")
             return []
+
+    def scrape_product_details(self, seo_url):
+        """Scrape additional product details from the product page."""
+        try:
+            self.logger.info(f"Scraping product details from: {seo_url}")
+            self.driver.get(seo_url)
+            
+            # Wait for page to load
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.TAG_NAME, "body"))
+            )
+            
+            # Additional wait for dynamic content
+            time.sleep(5)
+            
+            # Extract product details
+            product_data = {
+                'additional_images': [],
+                'current_price': None,
+                'amount_sold': None,
+                'reviews': [],
+                'rating': None,
+                'total_reviews': None
+            }
+            
+            # Get all product images
+            try:
+                image_elements = self.driver.find_elements(By.CSS_SELECTOR, '.slider-container img')
+                for img in image_elements:
+                    src = img.get_attribute('src')
+                    if src:
+                        product_data['additional_images'].append(src)
+            except Exception as e:
+                self.logger.error(f"Error getting product images: {str(e)}")
+            
+            # Get current price
+            try:
+                # Find the price container
+                price_container = self.driver.find_element(By.CSS_SELECTOR, '.flex.flex-row.items-baseline')
+                if price_container:
+                    # Get all price elements
+                    price_parts = []
+                    
+                    # Get currency symbol
+                    currency_symbol = price_container.find_element(By.CSS_SELECTOR, '.font-sans.font-medium').text.strip()
+                    price_parts.append(currency_symbol)
+                    
+                    # Get whole number
+                    whole_number = price_container.find_element(By.CSS_SELECTOR, '.text-color-UIText1.Headline-Semibold').text.strip()
+                    price_parts.append(whole_number)
+                    
+                    # Get decimal part
+                    decimal_part = price_container.find_element(By.CSS_SELECTOR, '.font-sans.font-medium:last-child').text.strip()
+                    price_parts.append(decimal_part)
+                    
+                    # Combine all parts
+                    product_data['current_price'] = ''.join(price_parts)
+            except NoSuchElementException:
+                self.logger.warning("Price element not found")
+            except Exception as e:
+                self.logger.error(f"Error getting price: {str(e)}")
+            
+            # Get amount sold
+            try:
+                # Find all elements with the class
+                sold_elements = self.driver.find_elements(By.CSS_SELECTOR, '.flex.flex-row.items-center span.H3-Regular.text-color-UIText2')
+                for element in sold_elements:
+                    text = element.text.strip()
+                    # Check if the text contains any digit
+                    if any(char.isdigit() for char in text):
+                        product_data['amount_sold'] = text
+                        break
+            except NoSuchElementException:
+                self.logger.warning("Amount sold element not found")
+            except Exception as e:
+                self.logger.error(f"Error getting amount sold: {str(e)}")
+            
+            # Get overall rating and total reviews
+            try:
+                rating_element = self.driver.find_element(By.CSS_SELECTOR, '.flex.flex-col.mt-40 .H1-Bold.mr-3')
+                if rating_element:
+                    product_data['rating'] = rating_element.text.strip()
+                
+                total_reviews_element = self.driver.find_element(By.CSS_SELECTOR, '.flex.flex-col.mt-40 .H2-Semibold.text-color-UIText1Display')
+                if total_reviews_element:
+                    product_data['total_reviews'] = total_reviews_element.text.strip()
+            except NoSuchElementException:
+                self.logger.warning("Rating or total reviews element not found")
+            except Exception as e:
+                self.logger.error(f"Error getting rating or total reviews: {str(e)}")
+            
+            # Get reviews if enabled
+            if self.scrape_reviews:
+                try:
+                    # Click "View more" button if it exists and we want more reviews
+                    if self.max_reviews:
+                        try:
+                            view_more_button = self.driver.find_element(By.CSS_SELECTOR, '.rounded-8.flex.justify-center.items-center.background-color-UIShapeNeutral4.Headline-Semibold.text-color-UIText1.px-24.py-13')
+                            if view_more_button and view_more_button.text.strip() == "View more":
+                                view_more_button.click()
+                                time.sleep(2)  # Wait for reviews to load
+                        except NoSuchElementException:
+                            self.logger.info("No 'View more' button found")
+                        except Exception as e:
+                            self.logger.error(f"Error clicking 'View more' button: {str(e)}")
+                    
+                    review_containers = self.driver.find_elements(By.CSS_SELECTOR, '.flex.flex-col.mb-20')
+                    reviews_processed = 0
+                    
+                    for review in review_containers:
+                        if self.max_reviews and reviews_processed >= self.max_reviews:
+                            break
+                            
+                        try:
+                            # Get reviewer name
+                            reviewer_name = review.find_element(By.CSS_SELECTOR, '.ml-12 .H3-Semibold').text.strip()
+                            
+                            # Get review text
+                            review_text = review.find_element(By.CSS_SELECTOR, '.H4-Regular.text-color-UIText1.mt-12').text.strip()
+                            
+                            # Get item details
+                            item_details = review.find_element(By.CSS_SELECTOR, '.mt-12.Headline-Regular.text-color-UIText3').text.strip()
+                            
+                            # Get review date
+                            review_date = review.find_element(By.CSS_SELECTOR, '.mt-8.Headline-Regular.text-color-UIText3').text.strip()
+                            
+                            # Count filled stars for rating
+                            filled_stars = len(review.find_elements(By.CSS_SELECTOR, '.zero-sized-font.flex.gap-4.text-color-UIText1 svg'))
+                            
+                            review_data = {
+                                'reviewer': reviewer_name,
+                                'rating': filled_stars,
+                                'text': review_text,
+                                'item_details': item_details,
+                                'date': review_date
+                            }
+                            product_data['reviews'].append(review_data)
+                            reviews_processed += 1
+                        except Exception as e:
+                            self.logger.error(f"Error processing individual review: {str(e)}")
+                            continue
+                except Exception as e:
+                    self.logger.error(f"Error getting reviews: {str(e)}")
+            
+            return product_data
+            
+        except Exception as e:
+            self.logger.error(f"Error scraping product details: {str(e)}")
+            return None
 
     def close(self):
         """Close the WebDriver."""
@@ -523,24 +681,66 @@ def main():
         print("No usernames provided. Exiting...")
         return
     
-    # Get date range
+    # Get video limit
     while True:
         try:
-            start_date_str = input("\nEnter start date (YYYY-MM-DD): ").strip()
-            end_date_str = input("Enter end date (YYYY-MM-DD): ").strip()
-            
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
-            end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
-            
-            if start_date > end_date:
-                print("Start date must be before end date. Please try again.")
-                continue
-                
-            break
+            limit_input = input("\nEnter maximum number of videos to process (default: 10): ").strip()
+            limit = int(limit_input) if limit_input else 10
+            if limit > 0:
+                break
+            print("Please enter a positive number.")
         except ValueError:
-            print("Invalid date format. Please use YYYY-MM-DD format.")
+            print("Invalid number. Using default value of 10.")
+            limit = 10
+            break
     
-    scraper = TikTokScraper()
+    # Get review scraping options
+    print("\nReview Scraping Options")
+    print("----------------------")
+    print("1. Do you want to scrape product reviews?")
+    print("   This will collect reviewer names, ratings, comments, and dates.")
+    print("   Note: This will make the scraping process slower.")
+    
+    while True:
+        scrape_reviews_input = input("\nEnter your choice (y/n): ").strip().lower()
+        if scrape_reviews_input in ['y', 'n']:
+            scrape_reviews = scrape_reviews_input == 'y'
+            break
+        print("Please enter 'y' for yes or 'n' for no.")
+    
+    max_reviews = None
+    if scrape_reviews:
+        print("\n2. How many reviews do you want to scrape per product?")
+        print("   - Enter a number to limit reviews")
+        print("   - Press Enter to scrape all available reviews")
+        print("   Note: More reviews = longer scraping time")
+        
+        while True:
+            try:
+                max_reviews_input = input("\nEnter maximum number of reviews (or press Enter for all): ").strip()
+                if not max_reviews_input:
+                    print("Will scrape all available reviews.")
+                    break
+                max_reviews = int(max_reviews_input)
+                if max_reviews > 0:
+                    break
+                print("Please enter a positive number.")
+            except ValueError:
+                print("Invalid number. Please enter a valid number or press Enter for all reviews.")
+    
+    print("\nStarting scraper with the following settings:")
+    print(f"- Number of creators: {len(usernames)}")
+    print(f"- Maximum videos per creator: {limit}")
+    print(f"- Review scraping: {'Enabled' if scrape_reviews else 'Disabled'}")
+    if scrape_reviews:
+        print(f"- Maximum reviews per product: {'All' if max_reviews is None else max_reviews}")
+    
+    proceed = input("\nProceed with these settings? (y/n): ").strip().lower()
+    if proceed != 'y':
+        print("Scraping cancelled.")
+        return
+    
+    scraper = TikTokScraper(scrape_reviews=scrape_reviews, max_reviews=max_reviews)
     
     try:
         all_results = []
@@ -549,7 +749,7 @@ def main():
             print(f"\nProcessing creator: @{username}")
             
             # Get products from creator's profile
-            products = scraper.get_creator_videos(username, start_date, end_date)
+            products = scraper.get_creator_videos(username, limit=limit)
             print(f"Found {len(products)} products for creator: @{username}")
             
             # Process each product
@@ -566,7 +766,7 @@ def main():
                         # Add results for this product
                         product_results = {
                             'product_url': product['url'],
-                            'product_date': product['date'].isoformat(),
+                            'product_date': product['posted_time'],
                             'products': products
                         }
                         all_results.append(product_results)
@@ -577,6 +777,8 @@ def main():
                             print(f"Title: {product['title']}")
                             print(f"Price: {product.get('formatted_price', 'N/A')}")
                             print(f"Number of images: {len(product['images'])}")
+                            if scrape_reviews:
+                                print(f"Number of reviews scraped: {len(product.get('reviews', []))}")
                 
                 # Add a small delay between requests
                 time.sleep(5)

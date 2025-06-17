@@ -1,0 +1,499 @@
+[
+    {
+        "url": "https://www.tiktok.com/@sarahgibbons_/video/7514389543848611102",
+        "posted_time": "2025-06-11 00:29:39",
+        "products": [
+            {
+                "product_id": "1730915552044946095",
+                "title": "Buy 1 Get 1,Foot Care Cream,Anti Cracked Foot Cream,Moisturizing,Anti Crack,Softening and Nourishing Cream for Dry,Cracked Feet,Remove Dead Skin and Moisturize Dry Skin",
+                "elastic_title": "Buy 1 Get 1,Foot Care Cream,An",
+                "price": 0,
+                "market_price": 0,
+                "currency": "USD",
+                "currency_format": {
+                    "currency_symbol": "$",
+                    "decimal_place": 2,
+                    "decimal_symbol": ".",
+                    "separator": ",",
+                    "separator_index": [
+                        3,
+                        6,
+                        9,
+                        12,
+                        15,
+                        18
+                    ]
+                },
+                "seller_id": "7496011253878196911",
+                "source": "TikTok Shop",
+                "categories": [
+                    {
+                        "category_id": 601450,
+                        "category_name": "Beauty & Personal Care",
+                        "level": 1,
+                        "is_leaf": false,
+                        "parent_id": 0,
+                        "name_key": "magellan_601450"
+                    },
+                    {
+                        "category_id": 849032,
+                        "category_name": "Hand, Foot & Nail Care",
+                        "level": 2,
+                        "is_leaf": false,
+                        "parent_id": 601450,
+                        "name_key": "magellan_849032"
+                    },
+                    {
+                        "category_id": 601480,
+                        "category_name": "Hand & Foot Lotions, Creams & Scrubs",
+                        "level": 3,
+                        "is_leaf": true,
+                        "parent_id": 849032,
+                        "name_key": "magellan_601480"
+                    }
+                ],
+                "images": [
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/1bd046baf3e142fd9e49198793ac632d~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732"
+                ],
+                "cover_url": "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/1bd046baf3e142fd9e49198793ac632d~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732",
+                "detail_url": "https://oec-api.tiktokv.com/view/fe_tiktok_ecommerce_upgrade/index.html?enter_from=video&hide_nav_bar=1&view_background_color_auto_dark=1&should_full_screen=1",
+                "seo_url": "https://www.tiktok.com/shop/pdp/moisturizing-foot-cream-by-care-anti-dry-for-cracked-feet-skin/1730915552044946095?source=anchor",
+                "skus": [
+                    {
+                        "sku_id": 1730915552045011631,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    }
+                ],
+                "product_status": 90,
+                "platform": 5,
+                "is_platform_product": false,
+                "ad_label": "#sponsored",
+                "ad_position": "1",
+                "formatted_price": "$0.00",
+                "additional_images": [
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/1bd046baf3e142fd9e49198793ac632d~tplv-dx0w9n1ysr-resize-jpeg:200:200.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/1bd046baf3e142fd9e49198793ac632d~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/68e69ee6a6ad4bd898c64920d2df44f6~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/b9bce53de8444b98b8b84e23092927a7~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/821896f5a4cb4906afe80197e28e66a1~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/fb454415efdd4e24a528f025a4a6262f~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/cc7ebad6cb5e42e99feb974e0c3a48bd~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/91f77b6bce6c4eea9d5c5391234a5178~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/eb548d346f5c4673bef9384b5b0d52fc~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393"
+                ],
+                "current_price": "$9.98",
+                "amount_sold": "Sold by Flair Aura",
+                "reviews": [
+                    {
+                        "reviewer": "Yvette Kingsley",
+                        "rating": 5,
+                        "text": "OMG. My heels are so cracked. Wish I could show before and after pictures. I have been using this cream for 2 weeks and the results are amazing !!! My heels are so much softer and smoother.",
+                        "item_details": "Item: 2Pcs",
+                        "date": "April 2, 2025"
+                    },
+                    {
+                        "reviewer": "s**y",
+                        "rating": 5,
+                        "text": "Came in very quickly feels like roll on Vaseline the pink one has a slight peach scent and the blue one has a slight citrus scent both very nice",
+                        "item_details": "Item: 2Pcs",
+                        "date": "May 6, 2025"
+                    },
+                    {
+                        "reviewer": "Suzanne Brown",
+                        "rating": 5,
+                        "text": "It works really well because it is specifically designed to repair cracked heels. My heels were a bit cracked so I applied this cream and after three or four days the cracks on my heels were much better. I couldn't believe it so it really is a very good product.",
+                        "item_details": "Item: 2Pcs",
+                        "date": "April 2, 2025"
+                    }
+                ],
+                "rating": "4.6",
+                "total_reviews": "791 global reviews"
+            }
+        ]
+    },
+    {
+        "url": "https://www.tiktok.com/@sarahgibbons_/video/7516780332285250847",
+        "posted_time": "2025-06-17 11:07:10",
+        "products": [
+            {
+                "product_id": "1730629091575894658",
+                "title": "Women's All Over Print Cut Out\u00a0Sleeveless Cami Dress, Fashion Casual Backless Long Dress for Daily Outdoor Wear, Ladies Clothes for All Seasons, Womenswear,\u00a0Spaghetti Strap",
+                "elastic_title": "",
+                "price": 0,
+                "market_price": 0,
+                "currency": "USD",
+                "currency_format": {
+                    "currency_symbol": "$",
+                    "decimal_place": 2,
+                    "decimal_symbol": ".",
+                    "separator": ",",
+                    "separator_index": [
+                        3,
+                        6,
+                        9,
+                        12,
+                        15,
+                        18
+                    ]
+                },
+                "seller_id": "8646959134373742210",
+                "source": "TikTok Shop",
+                "categories": [
+                    {
+                        "category_id": 601152,
+                        "category_name": "Womenswear & Underwear",
+                        "level": 1,
+                        "is_leaf": false,
+                        "parent_id": 0,
+                        "name_key": "magellan_601152"
+                    },
+                    {
+                        "category_id": 842504,
+                        "category_name": "Women's Dresses",
+                        "level": 2,
+                        "is_leaf": false,
+                        "parent_id": 601152,
+                        "name_key": "magellan_842504"
+                    },
+                    {
+                        "category_id": 601281,
+                        "category_name": "Casual Dresses",
+                        "level": 3,
+                        "is_leaf": true,
+                        "parent_id": 842504,
+                        "name_key": "magellan_601281"
+                    }
+                ],
+                "images": [
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c2d7d645aba84706a0fdfdcc7d121ce6~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732"
+                ],
+                "cover_url": "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c2d7d645aba84706a0fdfdcc7d121ce6~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=615b9c44&shcp=57d7afb6&idc=useast8&from=1633393732",
+                "detail_url": "https://oec-api.tiktokv.com/view/fe_tiktok_ecommerce_upgrade/index.html?enter_from=video&hide_nav_bar=1&view_background_color_auto_dark=1&should_full_screen=1",
+                "seo_url": "https://www.tiktok.com/shop/pdp/cami-dress-by-fashion-casual-all-over-print-backless-long-dress/1730629091575894658?source=anchor",
+                "skus": [
+                    {
+                        "sku_id": 1730629091575960194,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576025730,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576091266,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576156802,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576222338,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576287874,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576353410,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576418946,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576484482,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730629091576550018,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130268290,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130333826,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130399362,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130464898,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130530434,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130595970,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130661506,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130727042,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130792578,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730769935130858114,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820486244504194,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820486244569730,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820486244635266,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909384322,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909449858,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909515394,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909580930,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909646466,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909712002,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909777538,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909843074,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909908610,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492909974146,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492910039682,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730820492910105218,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585919554178,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585919619714,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585919685250,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585919750786,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585919816322,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730850449185280642,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730850449185346178,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730850449185411714,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730850449185477250,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730850449185542786,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585919881858,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585919947394,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585920012930,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585920078466,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730843585920144002,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730953056024695426,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730953056024760962,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730953056024826498,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730953056024892034,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    },
+                    {
+                        "sku_id": 1730953056024957570,
+                        "outer_sku_id": "",
+                        "outer_product_id": ""
+                    }
+                ],
+                "product_status": 90,
+                "platform": 5,
+                "is_platform_product": false,
+                "ad_label": "#sponsored",
+                "ad_position": "1",
+                "formatted_price": "$0.00",
+                "additional_images": [
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c2d7d645aba84706a0fdfdcc7d121ce6~tplv-dx0w9n1ysr-resize-jpeg:200:200.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c2d7d645aba84706a0fdfdcc7d121ce6~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/abcb89f22d9741e28f13f50dd6348514~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/d75f8ad7155549b3a4326660a3334ac5~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/f4fb6e1bf3954e01b80f171f3da2bb28~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/518b07c1aec4420a987d534f963ce7e1~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/d257c8e7a7374946be813104a289d9c8~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/f2db9b2798584ba899fbe77e7fa58ba7~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/2b4d43cf896343d3aa2926e741852769~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393",
+                    "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/200ee9701e874553abff141c95983c79~tplv-dx0w9n1ysr-resize-jpeg:800:800.jpeg?dr=10509&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=useast8&from=1826719393"
+                ],
+                "current_price": "$13.78",
+                "amount_sold": "Sold by ORXUPR",
+                "reviews": [
+                    {
+                        "reviewer": "MissNaNa_Babe",
+                        "rating": 5,
+                        "text": "Love love love this dress,it is silky soft, sexy, well made and so comfy! I am 5'7 and about 138lbs and medium fits perfect!Shop my showcase, grab yours now!",
+                        "item_details": "Item: multicolor7, M",
+                        "date": "April 18, 2025"
+                    },
+                    {
+                        "reviewer": "S**q",
+                        "rating": 5,
+                        "text": "It fit perfect to my curves. I was a bit nervous if it would support everything. It tied well and I do feel supported with my D cups. Will be buying more.",
+                        "item_details": "Item: Fawn Brown, XL",
+                        "date": "May 6, 2025"
+                    },
+                    {
+                        "reviewer": "Kimberly \ud83c\udf43 \u2728",
+                        "rating": 5,
+                        "text": "The dress is amazing you need it. It\u2019s super comfy. It\u2019s stretchy. It\u2019s super flattering.",
+                        "item_details": "Item: multicolor8, M",
+                        "date": "April 10, 2025"
+                    }
+                ],
+                "rating": "4.8",
+                "total_reviews": "84 global reviews"
+            }
+        ]
+    }
+]

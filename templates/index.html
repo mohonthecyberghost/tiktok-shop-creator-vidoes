@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Product Scraper</title>
+    <title>Test Script</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .loading {
@@ -57,27 +57,28 @@
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-2xl mx-auto">
-            <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">TikTok Product Scraper</h1>
+            <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Test Script</h1>
             
             <div class="bg-white rounded-lg shadow-md p-6">
                 <form id="scrapeForm" class="space-y-6">
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
-                            TikTok Creator Username
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Creator Usernames
                         </label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
+                        <textarea
+                            id="usernames"
+                            name="usernames"
+                            rows="4"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter username (e.g., @username)"
+                            placeholder="Enter usernames (one per line)&#10;Example:&#10;username1&#10;username2&#10;@username3"
                             required
-                        >
+                        ></textarea>
+                        <p class="text-sm text-gray-500 mt-1">Enter one username per line. You can include or exclude the @ symbol.</p>
                     </div>
 
                     <div>
                         <label for="video_limit" class="block text-sm font-medium text-gray-700 mb-2">
-                            Number of Videos to Process
+                            Maximum items per Creator
                         </label>
                         <div class="flex items-center space-x-4">
                             <input
@@ -92,7 +93,41 @@
                             >
                             <span id="limitValue" class="text-lg font-medium text-gray-700">10</span>
                         </div>
-                        <p class="text-sm text-gray-500 mt-1">Maximum number of videos to process (1-50)</p>
+                        <p class="text-sm text-gray-500 mt-1">Maximum number of items to process per creator (1-50)</p>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <h3 class="text-lg font-medium text-gray-700 mb-4">Review Settings</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id="scrape_reviews"
+                                    name="scrape_reviews"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                    onchange="toggleReviewSettings()"
+                                >
+                                <label for="scrape_reviews" class="ml-2 block text-sm text-gray-700">
+                                    Enable Review Scraping
+                                </label>
+                            </div>
+                            <div id="reviewSettings" class="hidden space-y-4 pl-6">
+                                <div>
+                                    <label for="max_reviews" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Maximum Reviews per Product
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="max_reviews"
+                                        name="max_reviews"
+                                        min="1"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Leave empty for all reviews"
+                                    >
+                                    <p class="text-sm text-gray-500 mt-1">Limit the number of reviews to scrape per product</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="flex justify-center">
@@ -100,7 +135,7 @@
                             type="submit"
                             class="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                         >
-                            Start Scraping
+                            Start Script Loading...
                         </button>
                     </div>
                 </form>
@@ -117,7 +152,7 @@
     <div id="loading" class="loading">
         <div class="loading-content">
             <div class="spinner"></div>
-            <p class="text-lg font-medium text-gray-700">Scraping in progress...</p>
+            <p class="text-lg font-medium text-gray-700">Script loading in progress...</p>
             <p class="text-sm text-gray-500 mt-2">This may take a few minutes</p>
             <div class="progress-bar">
                 <div id="progressBarFill" class="progress-bar-fill" style="width: 0%"></div>
@@ -128,6 +163,12 @@
     <script>
         function updateLimitValue(value) {
             document.getElementById('limitValue').textContent = value;
+        }
+
+        function toggleReviewSettings() {
+            const reviewSettings = document.getElementById('reviewSettings');
+            const scrapeReviews = document.getElementById('scrape_reviews');
+            reviewSettings.classList.toggle('hidden', !scrapeReviews.checked);
         }
 
         document.getElementById('scrapeForm').addEventListener('submit', async (e) => {
@@ -145,7 +186,28 @@
             progressBar.style.width = '0%';
             
             try {
-                const formData = new FormData(form);
+                // Get all usernames from textarea
+                const usernames = document.getElementById('usernames').value
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line !== '')
+                    .map(username => username.startsWith('@') ? username.substring(1) : username);
+
+                if (usernames.length === 0) {
+                    throw new Error('Please enter at least one username');
+                }
+
+                // Create form data
+                const formData = new FormData();
+                formData.append('usernames', JSON.stringify(usernames));
+                formData.append('video_limit', document.getElementById('video_limit').value);
+                formData.append('scrape_reviews', document.getElementById('scrape_reviews').checked);
+                
+                const maxReviews = document.getElementById('max_reviews').value;
+                if (maxReviews) {
+                    formData.append('max_reviews', maxReviews);
+                }
+
                 const response = await fetch('/scrape', {
                     method: 'POST',
                     body: formData
@@ -165,7 +227,7 @@
             } catch (error) {
                 result.classList.remove('hidden');
                 result.classList.add('bg-red-50');
-                resultMessage.textContent = 'An error occurred while scraping. Please try again.';
+                resultMessage.textContent = error.message || 'An error occurred while scraping. Please try again.';
             } finally {
                 loading.style.display = 'none';
             }
