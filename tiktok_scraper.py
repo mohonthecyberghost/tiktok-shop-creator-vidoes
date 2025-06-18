@@ -90,13 +90,14 @@ class TikTokScraper:
                 try:
                     self.driver.get(profile_url)
                     
+                    
                     # Wait for initial page load
-                    WebDriverWait(self.driver, 30).until(
+                    WebDriverWait(self.driver, 300).until(
                         EC.presence_of_element_located((By.TAG_NAME, "body"))
                     )
                     
                     # Wait for video elements to be present
-                    WebDriverWait(self.driver, 30).until(
+                    WebDriverWait(self.driver, 300).until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-e2e="user-post-item"]'))
                     )
                     
@@ -198,6 +199,47 @@ class TikTokScraper:
                         # Get page HTML
                         html_content = self.driver.page_source
                         
+                        # Extract video metadata
+                        video_id = video_url.split('/')[-1]
+                        video_title = None
+                        duration = None
+                        like_count = None
+                        views = None
+                        comment_count = None
+                        is_ad = False
+                        
+                        try:
+                            # Extract video title
+                            title_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="video-desc"]')
+                            if title_element:
+                                video_title = title_element.text
+                            
+                            # Extract video stats
+                            stats_elements = self.driver.find_elements(By.CSS_SELECTOR, '[data-e2e="like-count"], [data-e2e="comment-count"], [data-e2e="share-count"]')
+                            for element in stats_elements:
+                                text = element.text.lower()
+                                if 'like' in text:
+                                    like_count = text.replace('like', '').strip()
+                                elif 'comment' in text:
+                                    comment_count = text.replace('comment', '').strip()
+                            
+                            # Extract views
+                            views_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="video-views"]')
+                            if views_element:
+                                views = views_element.text
+                            
+                            # Extract duration
+                            duration_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="video-duration"]')
+                            if duration_element:
+                                duration = duration_element.text
+                            
+                            # Check if video is an ad
+                            ad_elements = self.driver.find_elements(By.CSS_SELECTOR, '[data-e2e="ad-label"]')
+                            is_ad = len(ad_elements) > 0
+                            
+                        except Exception as e:
+                            self.logger.error(f"Error extracting video metadata: {str(e)}")
+                        
                         # Try to get posting time from script data
                         posted_time = None
                         try:
@@ -229,8 +271,15 @@ class TikTokScraper:
                         
                         if products:  # Only add videos that have products
                             videos.append({
-                                'url': video_url,
-                                'posted_time': posted_time,
+                                'id': video_id,
+                                'title': video_title,
+                                'web_url': video_url,
+                                'duration': duration,
+                                'like_count': like_count,
+                                'views': views,
+                                'comment_count': comment_count,
+                                'posted_date': posted_time,
+                                'is_ad': is_ad,
                                 'products': products
                             })
                             self.logger.info(f"Found {len(products)} products in video: {video_url}")
@@ -754,10 +803,10 @@ def main():
             
             # Process each product
             for product in products:
-                print(f"\nProcessing product: {product['url']}")
+                print(f"\nProcessing product: {product['web_url']}")
                 
                 # Get page HTML
-                html_content = scraper.get_page_html(product['url'])
+                html_content = scraper.get_page_html(product['web_url'])
                 if html_content:
                     # Extract product information
                     products = scraper.extract_product_info(html_content)
@@ -765,8 +814,8 @@ def main():
                     if products:
                         # Add results for this product
                         product_results = {
-                            'product_url': product['url'],
-                            'product_date': product['posted_time'],
+                            'product_url': product['web_url'],
+                            'product_date': product['posted_date'],
                             'products': products
                         }
                         all_results.append(product_results)
