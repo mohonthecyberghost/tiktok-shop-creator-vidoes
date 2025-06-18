@@ -90,14 +90,26 @@ class TikTokScraper:
                 try:
                     self.driver.get(profile_url)
                     
+                    # After loading the profile page
+                    try:
+                        # Wait a moment for the error to appear if it will
+                        time.sleep(2)
+                        refresh_buttons = self.driver.find_elements(By.CSS_SELECTOR, 'button.css-tlik2g-Button-StyledButton')
+                        if refresh_buttons:
+                            self.logger.info("Detected 'Something went wrong' page. Clicking Refresh button.")
+                            refresh_buttons[0].click()
+                            # Wait for the page to reload
+                            time.sleep(5)
+                    except Exception as e:
+                        self.logger.error(f"Error trying to click Refresh button: {str(e)}")
                     
                     # Wait for initial page load
-                    WebDriverWait(self.driver, 300).until(
+                    WebDriverWait(self.driver, 30).until(
                         EC.presence_of_element_located((By.TAG_NAME, "body"))
                     )
                     
                     # Wait for video elements to be present
-                    WebDriverWait(self.driver, 300).until(
+                    WebDriverWait(self.driver, 30).until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-e2e="user-post-item"]'))
                     )
                     
@@ -160,8 +172,14 @@ class TikTokScraper:
                     try:
                         url = element.get_attribute('href')
                         if url and '/video/' in url:
-                            video_urls.append(url)
-                            self.logger.info(f"Added video URL: {url}")
+                            # Extract view count from child element
+                            try:
+                                views_element = element.find_element(By.CSS_SELECTOR, '[data-e2e="video-views"]')
+                                views = views_element.text
+                            except Exception:
+                                views = None
+                            video_urls.append({'url': url, 'views': views})
+                            self.logger.info(f"Added video URL: {url} with views: {views}")
                     except Exception as e:
                         self.logger.error(f"Error getting URL from element: {str(e)}")
                         continue
@@ -174,7 +192,9 @@ class TikTokScraper:
             # Process each video URL
             self.logger.info(f"Starting to process {min(len(video_urls), limit)} videos...")
             videos = []
-            for index, video_url in enumerate(video_urls[:limit], 1):
+            for index, video_info in enumerate(video_urls[:limit], 1):
+                video_url = video_info['url']
+                video_views = video_info['views']
                 self.logger.info(f"Processing video {index}/{min(len(video_urls), limit)}: {video_url}")
                 max_retries = 3
                 retry_count = 0
@@ -191,7 +211,6 @@ class TikTokScraper:
                             EC.presence_of_element_located((By.TAG_NAME, "body"))
                         )
                         
-                        
                         # Additional wait for dynamic content
                         self.logger.info("Waiting for dynamic content...")
                         time.sleep(8)  # Increased wait time for dynamic content
@@ -204,39 +223,39 @@ class TikTokScraper:
                         video_title = None
                         duration = None
                         like_count = None
-                        views = None
                         comment_count = None
-                        is_ad = False
                         
                         try:
                             # Extract video title
-                            title_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="video-desc"]')
-                            if title_element:
-                                video_title = title_element.text
+                            desc_container = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="browse-video-desc"]')
+                            spans = desc_container.find_elements(By.CSS_SELECTOR, 'span[data-e2e="new-desc-span"]')
+                            desc_text = ' '.join([span.text for span in spans if span.text.strip()])
+                            hashtags = [a.text for a in desc_container.find_elements(By.CSS_SELECTOR, 'a[data-e2e="search-common-link"]')]
+                            video_title = desc_text + ' ' + ' '.join(hashtags)
                             
-                            # Extract video stats
-                            stats_elements = self.driver.find_elements(By.CSS_SELECTOR, '[data-e2e="like-count"], [data-e2e="comment-count"], [data-e2e="share-count"]')
-                            for element in stats_elements:
-                                text = element.text.lower()
-                                if 'like' in text:
-                                    like_count = text.replace('like', '').strip()
-                                elif 'comment' in text:
-                                    comment_count = text.replace('comment', '').strip()
-                            
-                            # Extract views
-                            views_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="video-views"]')
-                            if views_element:
-                                views = views_element.text
-                            
+                            # Extract like count
+                            try:
+                                like_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="like-count"]')
+                                like_count = like_element.text
+                            except Exception:
+                                like_count = None
+                            # Extract comment count
+                            try:
+                                comment_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="comment-count"]')
+                                comment_count = comment_element.text
+                            except Exception:
+                                comment_count = None
                             # Extract duration
-                            duration_element = self.driver.find_element(By.CSS_SELECTOR, '[data-e2e="video-duration"]')
-                            if duration_element:
-                                duration = duration_element.text
-                            
-                            # Check if video is an ad
-                            ad_elements = self.driver.find_elements(By.CSS_SELECTOR, '[data-e2e="ad-label"]')
-                            is_ad = len(ad_elements) > 0
-                            
+                            try:
+                                duration_container = self.driver.find_element(By.CSS_SELECTOR, '.css-1cuqcrm-DivSeekBarTimeContainer')
+                                if duration_container:
+                                    duration_text = duration_container.text
+                                    if '/' in duration_text:
+                                        duration = duration_text.split('/')[-1].strip()
+                                    else:
+                                        duration = duration_text.strip()
+                            except Exception:
+                                duration = None
                         except Exception as e:
                             self.logger.error(f"Error extracting video metadata: {str(e)}")
                         
@@ -276,10 +295,9 @@ class TikTokScraper:
                                 'web_url': video_url,
                                 'duration': duration,
                                 'like_count': like_count,
-                                'views': views,
+                                'views': video_views,
                                 'comment_count': comment_count,
                                 'posted_date': posted_time,
-                                'is_ad': is_ad,
                                 'products': products
                             })
                             self.logger.info(f"Found {len(products)} products in video: {video_url}")
