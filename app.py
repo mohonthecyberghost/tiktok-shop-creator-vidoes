@@ -161,7 +161,14 @@ def scrape():
             for username in usernames:
                 # Get videos with products from creator's profile
                 videos = scraper.get_creator_videos(username, limit=video_limit)
-                all_results.extend(videos)
+                all_results.append({'username': username, 'videos': videos})
+            
+            # Group by username for final output
+            grouped_results = {}
+            for entry in all_results:
+                username = entry['username']
+                videos = entry['videos']
+                grouped_results[username] = videos
             
             # Save results to file
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -171,7 +178,7 @@ def scrape():
             os.makedirs('product-jsons', exist_ok=True)
             
             with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(all_results, f, indent=4)
+                json.dump(grouped_results, f, indent=4)
             
             return jsonify({
                 'success': True,

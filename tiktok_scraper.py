@@ -178,8 +178,14 @@ class TikTokScraper:
                                 views = views_element.text
                             except Exception:
                                 views = None
-                            video_urls.append({'url': url, 'views': views})
-                            self.logger.info(f"Added video URL: {url} with views: {views}")
+                            # Extract video cover from child img
+                            try:
+                                cover_img = element.find_element(By.CSS_SELECTOR, 'img')
+                                video_cover = cover_img.get_attribute('src')
+                            except Exception:
+                                video_cover = None
+                            video_urls.append({'url': url, 'views': views, 'video_cover': video_cover})
+                            self.logger.info(f"Added video URL: {url} with views: {views} and cover: {video_cover}")
                     except Exception as e:
                         self.logger.error(f"Error getting URL from element: {str(e)}")
                         continue
@@ -195,6 +201,7 @@ class TikTokScraper:
             for index, video_info in enumerate(video_urls[:limit], 1):
                 video_url = video_info['url']
                 video_views = video_info['views']
+                video_cover = video_info['video_cover']
                 self.logger.info(f"Processing video {index}/{min(len(video_urls), limit)}: {video_url}")
                 max_retries = 3
                 retry_count = 0
@@ -298,6 +305,7 @@ class TikTokScraper:
                                 'views': video_views,
                                 'comment_count': comment_count,
                                 'posted_date': posted_time,
+                                'video_cover': video_cover,
                                 'products': products
                             })
                             self.logger.info(f"Found {len(products)} products in video: {video_url}")
