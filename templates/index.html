@@ -130,6 +130,18 @@
                         </div>
                     </div>
 
+                    <div class="flex items-center mt-2">
+                        <input
+                            type="checkbox"
+                            id="exclude_pinned"
+                            name="exclude_pinned"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        >
+                        <label for="exclude_pinned" class="ml-2 block text-sm text-gray-700">
+                            Exclude pinned videos
+                        </label>
+                    </div>
+
                     <div class="flex justify-center">
                         <button
                             type="submit"
@@ -207,6 +219,8 @@
                 if (maxReviews) {
                     formData.append('max_reviews', maxReviews);
                 }
+                // Add exclude_pinned
+                formData.append('exclude_pinned', document.getElementById('exclude_pinned').checked);
 
                 const response = await fetch('/scrape', {
                     method: 'POST',

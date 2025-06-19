@@ -150,6 +150,8 @@ def scrape():
                 max_reviews = int(request.form.get('max_reviews')) if request.form.get('max_reviews') else None
             except ValueError:
                 max_reviews = None
+        # Get exclude_pinned setting
+        exclude_pinned = request.form.get('exclude_pinned') == 'true'
         
         # Initialize scraper with review settings
         scraper = TikTokScraper(scrape_reviews=scrape_reviews, max_reviews=max_reviews)
@@ -160,7 +162,7 @@ def scrape():
             # Process each username
             for username in usernames:
                 # Get videos with products from creator's profile
-                videos = scraper.get_creator_videos(username, limit=video_limit)
+                videos = scraper.get_creator_videos(username, limit=video_limit, exclude_pinned=exclude_pinned)
                 all_results.append({'username': username, 'videos': videos})
             
             # Group by username for final output

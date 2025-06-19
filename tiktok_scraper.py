@@ -76,7 +76,7 @@ class TikTokScraper:
             self.logger.error(f"Error setting up Chrome WebDriver: {str(e)}")
             raise
 
-    def get_creator_videos(self, username, limit=10):
+    def get_creator_videos(self, username, limit=10, exclude_pinned=False):
         """Get videos from a creator's profile and extract products from each video page."""
         try:
             # Visit creator's profile
@@ -184,8 +184,17 @@ class TikTokScraper:
                                 video_cover = cover_img.get_attribute('src')
                             except Exception:
                                 video_cover = None
-                            video_urls.append({'url': url, 'views': views, 'video_cover': video_cover})
-                            self.logger.info(f"Added video URL: {url} with views: {views} and cover: {video_cover}")
+                            # Check if pinned
+                            try:
+                                pinned_badge = element.find_element(By.CSS_SELECTOR, '[data-e2e="video-card-badge"]')
+                                pinned = pinned_badge is not None
+                            except Exception:
+                                pinned = False
+                            # If exclude_pinned is True, skip pinned videos
+                            if exclude_pinned and pinned:
+                                continue
+                            video_urls.append({'url': url, 'views': views, 'video_cover': video_cover, 'pinned': pinned})
+                            self.logger.info(f"Added video URL: {url} with views: {views}, cover: {video_cover}, pinned: {pinned}")
                     except Exception as e:
                         self.logger.error(f"Error getting URL from element: {str(e)}")
                         continue
@@ -202,6 +211,7 @@ class TikTokScraper:
                 video_url = video_info['url']
                 video_views = video_info['views']
                 video_cover = video_info['video_cover']
+                pinned = video_info['pinned']
                 self.logger.info(f"Processing video {index}/{min(len(video_urls), limit)}: {video_url}")
                 max_retries = 3
                 retry_count = 0
@@ -306,6 +316,7 @@ class TikTokScraper:
                                 'comment_count': comment_count,
                                 'posted_date': posted_time,
                                 'video_cover': video_cover,
+                                'pinned': pinned,
                                 'products': products
                             })
                             self.logger.info(f"Found {len(products)} products in video: {video_url}")
